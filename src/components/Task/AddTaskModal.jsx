@@ -1,6 +1,6 @@
 import { IoClose } from "react-icons/io5";
 
-export default function AddTaskModal() {
+export default function AddTaskModal({ onCloseModal }) {
   return (
     <div className="overflow-x-hidden bg-black bg-opacity-70 overflow-y-auto fixed flex md:h-full top-4 left-0 right-0 md:inset-0 z-50 justify-center items-center">
       <div className="relative w-full max-w-2xl px-4 h-full md:h-auto">
@@ -11,6 +11,7 @@ export default function AddTaskModal() {
         p-9 max-md:px-4 lg:my-20 lg:p-11"
           >
             <button
+              onClick={onCloseModal}
               type="button"
               className="text-gray-400 text-xl absolute top-3 right-3 bg-transparent rounded-lg p-1.5 ml-auto inline-flex items-center hover:bg-gray-600 hover:text-white"
             >
