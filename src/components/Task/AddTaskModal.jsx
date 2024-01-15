@@ -1,11 +1,40 @@
+import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 
-export default function AddTaskModal({ onCloseModal }) {
+export default function AddTaskModal({ onCloseModal, onTaskSubmit }) {
+  const [task, setTask] = useState({
+    id: crypto.randomUUID(),
+    title: "",
+    description: "",
+    tags: [],
+    priority: "",
+    isFavorite: false,
+  });
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onTaskSubmit(task);
+    onCloseModal();
+  };
+
+  const handleChange = (e) => {
+    const name = e.target.name;
+    let value = e.target.value;
+
+    if (name === "tags") {
+      value = value.split(",");
+    }
+    setTask({
+      ...task,
+      [name]: value,
+    });
+  };
   return (
     <div className="overflow-x-hidden bg-black bg-opacity-70 overflow-y-auto fixed flex md:h-full top-4 left-0 right-0 md:inset-0 z-50 justify-center items-center">
       <div className="relative w-full max-w-2xl px-4 h-full md:h-auto">
         <div className="shadow relative">
           <form
+            onSubmit={handleSubmit}
             className="mx-auto my-10 w-full max-w-[740px]
        rounded-xl border border-[#FEFBFB]/[36%] bg-[#191D26]
         p-9 max-md:px-4 lg:my-20 lg:p-11"
@@ -26,6 +55,8 @@ export default function AddTaskModal({ onCloseModal }) {
                 <label name="title">Title</label>
                 <input
                   className="block w-full rounded-md bg-[#2D323F] px-3 py-2.5"
+                  value={task.title}
+                  onChange={handleChange}
                   type="text"
                   name="title"
                   id="title"
@@ -38,6 +69,8 @@ export default function AddTaskModal({ onCloseModal }) {
                 <textarea
                   className="block min-h-[120px] w-full rounded-md bg-[#2D323F] px-3 py-2.5 lg:min-h-[180px]"
                   type="text"
+                  value={task.description}
+                  onChange={handleChange}
                   name="description"
                   id="description"
                   required
@@ -51,6 +84,8 @@ export default function AddTaskModal({ onCloseModal }) {
                     className="block w-full rounded-md bg-[#2D323F] px-3 py-2.5"
                     type="text"
                     name="tags"
+                    value={task.tags}
+                    onChange={handleChange}
                     id="tags"
                     required
                   />
@@ -62,6 +97,8 @@ export default function AddTaskModal({ onCloseModal }) {
                     className="block w-full cursor-pointer rounded-md bg-[#2D323F] px-3 py-2.5"
                     name="priority"
                     id="priority"
+                    value={task.priority}
+                    onChange={handleChange}
                     required
                   >
                     <option value="">Select Priority</option>

@@ -18,12 +18,18 @@ export default function TaskBoard() {
   ]);
   const [showAddModal, setShowAddModal] = useState(false);
 
+  const handleAddTask = (task) => {
+    const clonedTasks = tasks.slice();
+    setTasks([...clonedTasks, task]);
+  };
+
   return (
     <section className="mb-20" id="tasks">
       <div className="container mx-auto">
         {showAddModal && (
           <AddTaskModal
             onCloseModal={() => setShowAddModal(false)}
+            onTaskSubmit={handleAddTask}
           ></AddTaskModal>
         )}
         <SearchTask></SearchTask>
