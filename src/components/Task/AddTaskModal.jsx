@@ -1,26 +1,32 @@
 import { useState } from "react";
 import { IoClose } from "react-icons/io5";
 
-export default function AddTaskModal({ onCloseModal, onTaskSubmit }) {
-  const [task, setTask] = useState({
-    id: crypto.randomUUID(),
-    title: "",
-    description: "",
-    tags: [],
-    priority: "",
-    isFavorite: false,
-  });
+export default function AddTaskModal({
+  onCloseModal,
+  onTaskSubmit,
+  taskToEdit,
+}) {
+  const [task, setTask] = useState(
+    taskToEdit || {
+      id: crypto.randomUUID(),
+      title: "",
+      description: "",
+      tags: [],
+      priority: "",
+      isFavorite: false,
+    }
+  );
+
+  const [isAddTask, setIsAddTask] = useState(Object.is(taskToEdit, null));
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onTaskSubmit(task);
-    onCloseModal();
+    onTaskSubmit(task, isAddTask);
   };
 
   const handleChange = (e) => {
     const name = e.target.name;
     let value = e.target.value;
-
     if (name === "tags") {
       value = value.split(",");
     }
@@ -47,7 +53,7 @@ export default function AddTaskModal({ onCloseModal, onTaskSubmit }) {
               <IoClose />
             </button>
             <h2 className="mb-9 text-center text-2xl font-bold text-white lg:mb-11 lg:text-[28px]">
-              Add New Task
+              {isAddTask ? "Add a new task" : "Update Task"}
             </h2>
 
             <div className="space-y-9 text-white lg:space-y-10">
@@ -102,9 +108,9 @@ export default function AddTaskModal({ onCloseModal, onTaskSubmit }) {
                     required
                   >
                     <option value="">Select Priority</option>
-                    <option value="low">Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
+                    <option value="Low">Low</option>
+                    <option value="Medium">Medium</option>
+                    <option value="High">High</option>
                   </select>
                 </div>
               </div>
@@ -115,7 +121,7 @@ export default function AddTaskModal({ onCloseModal, onTaskSubmit }) {
                 type="submit"
                 className="rounded bg-blue-600 px-4 py-2 text-white transition-all hover:opacity-80"
               >
-                Create new Task
+                {isAddTask ? "Create Task" : "Update Task"}
               </button>
             </div>
           </form>

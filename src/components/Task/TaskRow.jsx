@@ -1,9 +1,11 @@
 import { FaStar } from "react-icons/fa";
-export default function TaskRow({ task }) {
-  const { title, description, priority, isFavorite, tags } = task;
+export default function TaskRow({ task, onEdit, onDelete, onFavChange }) {
+  const { title, description, priority, isFavorite, tags, id } = task;
   return (
     <tr className="border-b border-[#2E3443] [&>td]:align-baseline [&>td]:px-4 [&>td]:py-2">
-      <td>{isFavorite ? <FaStar color="yellow" /> : <FaStar />}</td>
+      <td onClick={() => onFavChange(id)}>
+        {isFavorite ? <FaStar color="yellow" /> : <FaStar />}
+      </td>
       <td>{title}</td>
       <td>
         <div>{description}</div>
@@ -22,8 +24,12 @@ export default function TaskRow({ task }) {
       <td className="text-center">{priority}</td>
       <td>
         <div className="flex items-center justify-center space-x-3">
-          <button className="text-red-500">Delete</button>
-          <button className="text-blue-500">Edit</button>
+          <button onClick={() => onDelete(id)} className="text-red-500">
+            Delete
+          </button>
+          <button onClick={() => onEdit(task)} className="text-blue-500">
+            Edit
+          </button>
         </div>
       </td>
     </tr>
